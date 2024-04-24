@@ -1,8 +1,19 @@
 {
-  "name": "OpenUNIPA",
+  "name": "open-unipa",
+  "version": "0.0.0",
+  "description": "Open Unipa",
+  "main": "dist/index.js",
+  "license": "MIT",
   "packageManager": "yarn@4.1.0",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@types/node": "^20.12.7",
     "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build.release": "yarn build"
   }
 }
