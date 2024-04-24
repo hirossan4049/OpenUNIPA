@@ -10,11 +10,13 @@
   "devDependencies": {
     "@types/node": "^20.12.7",
     "corepack": "^0.28.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^1.5.1"
   },
   "scripts": {
     "build": "tsc",
-    "release": "yarn build"
+    "release": "yarn build",
+    "test": "vitest"
   },
   "packageManager": "yarn@4.1.1+sha256.f3cc0eda8e5560e529c7147565b30faa43b4e472d90e8634d7134a37c7f59781"
 }
