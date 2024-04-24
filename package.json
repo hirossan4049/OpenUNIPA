@@ -4,16 +4,17 @@
   "description": "Open Unipa",
   "main": "dist/index.js",
   "license": "MIT",
-  "packageManager": "yarn@4.1.0",
   "files": [
     "dist"
   ],
   "devDependencies": {
     "@types/node": "^20.12.7",
+    "corepack": "^0.28.0",
     "typescript": "^5.4.5"
   },
   "scripts": {
     "build": "tsc",
-    "build.release": "yarn build"
-  }
+    "release": "yarn build"
+  },
+  "packageManager": "yarn@4.1.1+sha256.f3cc0eda8e5560e529c7147565b30faa43b4e472d90e8634d7134a37c7f59781"
 }

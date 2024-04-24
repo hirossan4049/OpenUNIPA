@@ -14,11 +14,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"corepack@npm:^0.28.0":
+  version: 0.28.0
+  resolution: "corepack@npm:0.28.0"
+  bin:
+    corepack: ./dist/corepack.js
+    pnpm: ./dist/pnpm.js
+    pnpx: ./dist/pnpx.js
+    yarn: ./dist/yarn.js
+    yarnpkg: ./dist/yarnpkg.js
+  checksum: 10c0/bb66aea56e7d5c672e3434e95c0157b18871f5a4e8c6434131885c8d8116d0fc02da6ed51d515e31367aca9e23f9d688c1ca66f628c6d0eddbd987ac7b4dc107
+  languageName: node
+  linkType: hard
+
 "open-unipa@workspace:.":
   version: 0.0.0-use.local
   resolution: "open-unipa@workspace:."
   dependencies:
     "@types/node": "npm:^20.12.7"
+    corepack: "npm:^0.28.0"
     typescript: "npm:^5.4.5"
   languageName: unknown
   linkType: soft
