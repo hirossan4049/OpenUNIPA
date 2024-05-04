@@ -4,6 +4,10 @@
 - FAST
 - EASY
 
+## Requirements
+- node20
+- yarn v4
+
 ## Installation
 
 ```bash

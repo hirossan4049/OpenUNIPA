@@ -10,13 +10,19 @@
   "devDependencies": {
     "@types/node": "^20.12.7",
     "corepack": "^0.28.0",
+    "jsmin": "^1.0.1",
     "typescript": "^5.4.5",
     "vitest": "^1.5.1"
   },
   "scripts": {
     "build": "tsc",
-    "release": "yarn build",
-    "test": "vitest"
+    "release": "yarn build && jsmin -o dist/index.min.js dist/index.js && du -sh dist/index.min.js",
+    "test": "vitest run",
+    "dev": "yarn build && node dist/index.js"
   },
-  "packageManager": "yarn@4.1.1+sha256.f3cc0eda8e5560e529c7147565b30faa43b4e472d90e8634d7134a37c7f59781"
+  "packageManager": "yarn@3.4.1",
+  "dependencies": {
+    "@types/jsdom": "^21.1.6",
+    "jsdom": "^24.0.0"
+  }
 }
