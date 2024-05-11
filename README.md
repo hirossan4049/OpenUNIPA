@@ -1,8 +1,14 @@
-# OpenUNIPA
+<h1 align="center">
+  OpenUNIPA
+</h1>
 
 - SIMPLE
 - FAST
 - EASY
+
+| Node.js | Swift | C | C++ | Java |
+| --- | --- | --- | --- | --- |
+| 🚧  | ✗   | ✗   | ✗  | ✗   |
 
 ## Requirements
 - node20
@@ -19,12 +25,16 @@ TODO//////$ yarn add open-unipa
 ```ts
 import { OpenUNIPA } from 'open-unipa';
 
-const session = new UNIPA()
+const unipa = new OpenUNIPA({
+  username: "2412110000a",
+  password: "password",
+  univ: UnivList.KINDAI.HIGASHI_OSAKA,
+})
+await unipa.login()
 
-const ctx = await session.login({ id: "", plainPassword: "" })
-const timetable = await ctx.timetable.fetch()
-const json = timetable.json()
-const csv  = timetable.csv()
+const timetable = await unipa.timetable.fetch()
+timetable.csv()
+timetable.json()
 ```
 
 ## License
