@@ -22,7 +22,6 @@
   },
   "packageManager": "yarn@3.4.1",
   "dependencies": {
-    "@types/jsdom": "^21.1.6",
-    "jsdom": "^24.0.0"
+    "node-html-parser": "^6.1.13"
   }
 }
