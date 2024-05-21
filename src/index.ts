@@ -1,7 +1,5 @@
-import OpenUNIPA from './openunipa';
+import OpenUNIPA from './OpenUNIPA';
 import { UnivList } from './types/UnivList';
-
-export { hello } from './core';
 
 (async () => {
   const username = process.env.UNIPA_USER_ID
