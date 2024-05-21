@@ -8,6 +8,7 @@ lib/
 .env.local
 yarn-error.log
 docs/_dist/
+stub/*
 
 .yarn/*
 !.yarn/patches

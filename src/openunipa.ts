@@ -1,3 +1,4 @@
+import { readFileSync, writeFileSync } from "fs"
 import parse, { HTMLElement } from "node-html-parser"
 import { Timetable } from "./timetable"
 import { Univ } from "./types/UnivList"
@@ -7,6 +8,7 @@ export default class OpenUNIPA {
   DEBUG = {
     timeLog: false,
     stub: false,
+    saveHTML: false,
   }
   timetable: Timetable = new Timetable()
 
@@ -33,8 +35,7 @@ export default class OpenUNIPA {
     if (!this.univ.loginPath) { throw new Error("loginPath is not defined") }
     const { state, element } = await this._fetch(this.univ.loginPath, undefined, "GET", "<form", "</form>")
 
-    if (state !== "success") { throw new Error("Login failed") }
-
+    if (state !== "success") { throw new Error(state) }
 
     const loginUrl = element.getElementById("form1")?.getAttribute("action")
     const token = element.querySelector("input[name='com.sun.faces.VIEW']")?.getAttribute("value")
@@ -65,20 +66,26 @@ export default class OpenUNIPA {
   }
 
   private async _fetch(url: string, params?: URLSearchParams, method?: "GET" | "POST", fromBody = "<body", toBody = "</body>"): Promise<{ state: WindowState, element: HTMLElement }> {
-    const res = await fetch(this.univ.baseUrl + url + (params ? `?${params}` : ""), {
-      method: method ?? "GET",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Cookie": this.cookies,
-      }
-    })
-    const text = await res.text()
+    let text = ""
+    if (this.DEBUG.stub) {
+      text = readFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`, "utf-8")
+    } else {
+      const res = await fetch(this.univ.baseUrl + url + (params ? `?${params}` : ""), {
+        method: method ?? "GET",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Cookie": this.cookies,
+        }
+      })
+      this.cookies = res.headers.getSetCookie().map((cookie) => cookie.split(";")[0]).join("; ")
+      text = await res.text()
+    }
     const state = getWindowState(text)
 
-    this.cookies = res.headers.getSetCookie().map((cookie) => cookie.split(";")[0]).join("; ")
     const element = parse(text.slice(text.indexOf(fromBody), text.lastIndexOf(toBody) + toBody.length))
-    // writeFileSync(randomUUID() + ".html", text, "utf-8")
-    // console.log(element.innerHTML)
+    if (this.DEBUG.saveHTML) {
+      writeFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`, text, "utf-8")
+    }
     return { state, element }
   }
 }
