@@ -14,10 +14,13 @@ import { UnivList } from './types/UnivList';
     univ: UnivList.KINDAI.HIGASHI_OSAKA,
   })
 
-  unipa.DEBUG.stub = true
+  // unipa.DEBUG.stub = true
   // unipa.DEBUG.saveHTML = true
 
-  await unipa.login()
+  const res = await unipa.login()
+  console.log(res)
+  
+  console.log(unipa.menu.getMenu()["時間割・授業"])
 
   const timetable = await unipa.timetable.fetch()
   timetable.csv()
