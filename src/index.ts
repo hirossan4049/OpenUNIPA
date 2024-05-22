@@ -15,7 +15,7 @@ import { UnivList } from './types/UnivList';
   })
 
   unipa.DEBUG.stub = true
-  unipa.DEBUG.saveHTML = true
+  // unipa.DEBUG.saveHTML = true
 
   await unipa.login()
 
