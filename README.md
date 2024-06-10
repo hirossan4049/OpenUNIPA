@@ -12,7 +12,7 @@
 
 ## Requirements
 - node20
-- yarn v4
+- yarn@3.4.1
 
 ## Installation
 
