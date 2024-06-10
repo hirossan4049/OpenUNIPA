@@ -32,7 +32,7 @@ export default function OpenUNIPA({ username, password, univ, debug }: { usernam
 
   particalSession.DEBUG = debug || {
     stub: false,
-    saveHTML: true,
+    saveHTML: false,
   }
   particalSession.request = new Request(particalSession as Session)
 

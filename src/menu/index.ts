@@ -66,6 +66,7 @@ export class MenuController extends BaseController {
 
     const res = await this.session.request.fetch(formLink!, params, "POST")
     if (res.state !== "success") { throw new Error("failed " + res.state) }
+    this.session.element = res.element
   }
 
   // findClick(title: string) { }

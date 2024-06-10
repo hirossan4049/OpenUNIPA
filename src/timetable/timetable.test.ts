@@ -1,7 +1,8 @@
-import OpenUNIPA from './OpenUNIPA';
-import { UnivList } from './types/UnivList';
+import { expect, test } from 'vitest'
+import OpenUNIPA from '../../dist/OpenUNIPA'
+import { UnivList } from '../../dist/types/UnivList'
 
-(async () => {
+test('timetable', async () => {
   const username = process.env.UNIPA_USER_ID
   const password = process.env.UNIPA_PLAIN_PASSWORD
   if (username === undefined || password === undefined) {
@@ -14,14 +15,13 @@ import { UnivList } from './types/UnivList';
     univ: UnivList.KINDAI.HIGASHI_OSAKA,
   })
 
-  // unipa.DEBUG.stub = true
-  // unipa.DEBUG.saveHTML = true
+  unipa.DEBUG.stub = true
 
   await unipa.account.login()
-  // console.log(res)
-  
-  // console.log(unipa.menu.getMenu()["時間割・授業"])
-
   const timetable = await unipa.timetable.fetch()
-  console.log(timetable.print())
-})()
+
+  expect(timetable.items.length).toBe(11)
+  expect(timetable.items[0].subject).toBe("基礎線形代数学１")
+  expect(timetable.items[8].teacher).toBe("大谷 雅之")
+  expect(timetable.items[3].class).toBeUndefined()
+})

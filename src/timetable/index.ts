@@ -1,18 +1,7 @@
 import BaseController from "../base";
+import { TimetableItem } from "../types/TimeTableItem";
 import { TimetableResult } from "./result";
 
-export type TimetableItem = {
-  week: number,
-  period: number,
-  subject: string,
-  class?: string,
-  teacher?: string,
-  room?: string,
-  syllabus: {
-    year: string,
-    id: string,
-  }
-}
 
 // とりあえず前期のみ対応
 export class Timetable extends BaseController {
@@ -47,8 +36,7 @@ export class Timetable extends BaseController {
         items.push(item)
       }
     }
-    console.table(items)
-    return new TimetableResult()
+    return new TimetableResult(items)
   }
 
   private convertSyllabus(raw: string) {
