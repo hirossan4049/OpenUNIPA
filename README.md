@@ -19,7 +19,7 @@
 ## Installation
 
 ```bash
-TODO//////$ yarn add open-unipa
+$ yarn add open-unipa
 ```
 
 ## Usage
