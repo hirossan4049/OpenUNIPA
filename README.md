@@ -46,6 +46,36 @@ console.log(timetable.items)
 // },
 ```
 
+## 計測
+
+<table><thead>
+  <tr>
+    <th rowspan="2">計測方法<br></th>
+    <th colspan="2">stub</th>
+    <th colspan="2">real(有線)<br></th>
+    <th colspan="2">real(大学WiFi)</th>
+  </tr>
+  <tr>
+    <th>time bun run</th>
+    <th>console.time</th>
+    <th>time bun run</th>
+    <th>console.time</th>
+    <th>time bun run</th>
+    <th>console.time</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td>login -&gt; timetable</td>
+    <td>0.2s<br></td>
+    <td>86.47ms<br></td>
+    <td></td>
+    <td></td>
+    <td>1.897s</td>
+    <td></td>
+  </tr>
+</tbody>
+</table>
+
 ## License
 
 todo.

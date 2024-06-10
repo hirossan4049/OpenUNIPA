@@ -1,3 +1,3 @@
 .PHONY: dev
 dev:
-	yarn build && cd example/bun && bun run index.ts
+	yarn build && cd example/bun && time bun run index.ts
