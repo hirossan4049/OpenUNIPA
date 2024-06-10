@@ -1,8 +1,9 @@
 {
   "name": "open-unipa",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Open Unipa",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "files": [
     "dist"

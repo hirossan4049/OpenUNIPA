@@ -1,2 +1,2 @@
-export { default as OpenUNIPA } from "./OpenUNIPA";
-export { UnivList } from "./types/UnivList";
+export * from "./OpenUNIPA";
+export * from "./types/UnivList";
