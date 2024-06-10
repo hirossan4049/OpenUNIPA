@@ -23,7 +23,7 @@ export type Session = {
   timetable: TimetableController,
 }
 
-export default function OpenUNIPA({ username, password, univ, debug }: { username: string, password: string, univ: Univ, debug?: DebugOption }) {
+export function OpenUNIPA({ username, password, univ, debug }: { username: string, password: string, univ: Univ, debug?: DebugOption }) {
   const particalSession: Partial<Session> = {}
 
   particalSession.username = username
