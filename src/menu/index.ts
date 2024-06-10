@@ -1,4 +1,4 @@
-import { Session } from "../OpenUNIPA"
+import BaseController from "../base"
 
 type Item = {
   title: string,
@@ -6,13 +6,7 @@ type Item = {
   items?: Item[]
 }
 
-export class Menu {
-  private session: Session
-
-  constructor(session: Session) {
-    this.session = session
-  }
-
+export class MenuController extends BaseController {
   getMenu(flatten = true) {
     const { element } = this.session
     if (!element) { throw new Error("element is not defined") }
@@ -53,12 +47,46 @@ export class Menu {
     return items
   }
 
+  async click(item: Item) {
+    const form = this.session.element?.querySelector("form")
+    if (!form) { throw new Error("form is not defined") }
+    const formLink = form?.getAttribute("action")
+    const { menuNo, funcRowId } = this.convertItem(item)
+    if (!menuNo || !funcRowId) { throw new Error("menuNo or funcRowId is not defined") }
+    const token = this.session.request.getToken();
+    if (!token) { throw new Error("token is not defined") }
+
+    const params = new URLSearchParams({
+      'header:form1:htmlMenuItemButton': "実行",
+      'header:form1:hiddenMenuNo': menuNo,
+      'header:form1:hiddenFuncRowId': funcRowId,
+      'com.sun.faces.VIEW': token,
+      'header:form1': 'header:form1',
+    })
+
+    const res = await this.session.request.fetch(formLink!, params, "POST")
+    if (res.state !== "success") { throw new Error("failed" + res.state) }
+
+    
+  }
+
+  // findClick(title: string) { }
+
+
   objects() { }
 
   pretty() { }
 
   private menuTitlePretty(title: string) {
     return title.replaceAll("　", "").replaceAll(">", "").replaceAll("<", "")
+  }
+
+  private convertItem(item: Item): { menuNo?: string, funcRowId?: string } {
+    const l = item.link
+    if (!l) return {}
+    const menuNo = l.slice(l.indexOf('(') + 1, l.indexOf(','))
+    const funcRowId = l.slice(l.indexOf(',') + 1, l.indexOf(')'))
+    return { menuNo, funcRowId }
   }
 
 }
