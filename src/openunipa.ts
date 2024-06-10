@@ -2,7 +2,7 @@ import { HTMLElement } from "node-html-parser"
 import Request from "./Request"
 import AccountController from "./account"
 import { MenuController } from "./menu"
-import { Timetable } from "./timetable"
+import { TimetableController } from "./timetable"
 import { Univ } from "./types/UnivList"
 
 type DebugOption = {
@@ -20,7 +20,7 @@ export type Session = {
 
   account: AccountController,
   menu: MenuController,
-  timetable: Timetable,
+  timetable: TimetableController,
 }
 
 export default function OpenUNIPA({ username, password, univ, debug }: { username: string, password: string, univ: Univ, debug?: DebugOption }) {
@@ -38,7 +38,7 @@ export default function OpenUNIPA({ username, password, univ, debug }: { usernam
 
   particalSession.account = new AccountController(particalSession as Session)
   particalSession.menu = new MenuController(particalSession as Session)
-  particalSession.timetable = new Timetable(particalSession as Session)
+  particalSession.timetable = new TimetableController(particalSession as Session)
 
   return particalSession as Session
 }

@@ -4,7 +4,7 @@ import { TimetableResult } from "./result";
 
 
 // とりあえず前期のみ対応
-export class Timetable extends BaseController {
+export class TimetableController extends BaseController {
   async fetch(): Promise<TimetableResult> {
     if (this.session.DEBUG.stub) {
       this.session.request.setStubData('-up-faces-up-po-Poa00601A.jsp')
