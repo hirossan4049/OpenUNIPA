@@ -4,7 +4,7 @@ export type WindowState = "maintenance" | "timeout" | "login" | "success" | "err
 export function getWindowState(text: string): WindowState {
   if (text.includes("システム停止中")) {
     return "maintenance"
-  } else if (text.includes("セッション")) {
+  } else if (text.includes("セッションタイムアウト")) {
     return "timeout"
   }
   return "success"

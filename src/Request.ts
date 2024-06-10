@@ -13,7 +13,7 @@ export default class Request {
 
   async fetch(url: string, params?: URLSearchParams, method: "GET" | "POST" = "GET", fromBody = "<body", toBody = "</body>"): Promise<{ state: WindowState, element: HTMLElement }> {
     let text = ""
-    console.info("[FETCH]:", getCaller(), this.session.univ!.baseUrl + url + (params ? `?${params}` : ""))
+    console.info(this.session.DEBUG.stub ? "[STUB ]:" : "[FETCH]:", getCaller(), this.session.univ!.baseUrl + url + (params ? `?${params}` : ""))
     if (this.session.DEBUG.stub) {
       text = readFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`, "utf-8")
     } else {
@@ -29,15 +29,15 @@ export default class Request {
       this.cookies += res.headers.getSetCookie().map((cookie) => cookie.split(";")[0]).join("; ")
       text = await res.text()
     }
-    const state = getWindowState(text)
     text = text //html_beautify(text, { indent_size: 2 })
       .slice(text.indexOf(fromBody), text.lastIndexOf(toBody) + toBody.length)
       .replaceAll(/<script[^>]*>([\s\S]*?)<\/script>/gi, '')
-      .replaceAll("&nbsp;", "")
+    // .replaceAll("&nbsp;", "")
 
     // const element = parse(text.slice(text.indexOf(fromBody), text.lastIndexOf(toBody) + toBody.length))
     // console.log(fromBody, toBody)
     const element = parse(text)
+    const state = getWindowState(text)
 
     if (this.session.DEBUG.saveHTML) { writeFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`, text, "utf-8") }
 
@@ -50,6 +50,10 @@ export default class Request {
 
   removeCookies() {
     this.cookies = ""
+  }
+
+  setStubData(path: string) {
+    this.session.element = parse(readFileSync(`stub/${path}.html`, "utf-8"))
   }
 }
 
