@@ -1,17 +1,10 @@
-import { expect, test } from 'vitest'
-import OpenUNIPA from '../../dist/OpenUNIPA'
-import { UnivList } from '../../dist/types/UnivList'
+import { expect, test } from 'vitest';
+import { OpenUNIPA, UnivList } from "../";
 
 test('timetable', async () => {
-  const username = process.env.UNIPA_USER_ID
-  const password = process.env.UNIPA_PLAIN_PASSWORD
-  if (username === undefined || password === undefined) {
-    throw new Error("UNIPA_USER_ID or UNIPA_PLAIN_PASSWORD is not defined")
-  }
-
   const unipa = OpenUNIPA({
-    username,
-    password,
+    username: "username",
+    password: "password",
     univ: UnivList.KINDAI.HIGASHI_OSAKA,
   })
 
