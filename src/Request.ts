@@ -1,7 +1,18 @@
-import { readFileSync, writeFileSync } from "fs";
 import parse, { HTMLElement } from "node-html-parser";
 import { Session } from "./OpenUNIPA";
+import { readFileSync, writeFileSync } from "./utils/fs";
 import { WindowState, getWindowState } from "./utils/getWindowState";
+
+const getSetCookie = function (headers: Headers) {
+  const set_cookies = []
+  for (const [name, value] of headers) {
+    if (name === "set-cookie") {
+      set_cookies.push(value)
+    }
+  }
+  return set_cookies
+}
+
 
 export default class Request {
   private cookies = ""
@@ -15,7 +26,7 @@ export default class Request {
     let text = ""
     console.info(this.session.DEBUG.stub ? "[STUB ]:" : "[FETCH]:", getCaller(), this.session.univ!.baseUrl + url + (params ? `?${params}` : ""))
     if (this.session.DEBUG.stub) {
-      text = readFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`, "utf-8")
+      text = readFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`)
     } else {
       const res = await fetch(this.session.univ!.baseUrl + url + (params ? `?${params}` : ""), {
         method,
@@ -26,7 +37,7 @@ export default class Request {
         // mode: "cors",
         // body: body,
       })
-      this.cookies += res.headers.getSetCookie().map((cookie) => cookie.split(";")[0]).join("; ")
+      this.cookies += getSetCookie(res.headers).map((cookie) => cookie.split(";")[0]).join("; ")
       text = await res.text()
     }
     text = text //html_beautify(text, { indent_size: 2 })
@@ -39,7 +50,7 @@ export default class Request {
     const element = parse(text)
     const state = getWindowState(text)
 
-    if (this.session.DEBUG.saveHTML) { writeFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`, text, "utf-8") }
+    if (this.session.DEBUG.saveHTML) { writeFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`, text) }
 
     return { state, element }
   }
@@ -53,7 +64,8 @@ export default class Request {
   }
 
   setStubData(path: string) {
-    this.session.element = parse(readFileSync(`stub/${path}.html`, "utf-8"))
+    console.log(path)
+    this.session.element = parse(readFileSync(`stub/${path}.html`))
   }
 }
 

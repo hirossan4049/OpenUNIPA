@@ -1,6 +1,6 @@
 {
   "name": "open-unipa",
-  "version": "0.0.7",
+  "version": "0.0.10",
   "description": "Open Unipa",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,9 +17,10 @@
   },
   "scripts": {
     "build": "tsc",
-    "release": "yarn build && jsmin -o dist/index.min.js dist/index.js && du -sh dist/index.min.js",
+    "release": "yarn pack && npm publish package.tgz && rm package.tgz",
     "test": "vitest run",
-    "dev": "yarn build && time node dist/index.js"
+    "dev": "yarn build && time node dist/index.js",
+    "pack": "ncc build -m"
   },
   "packageManager": "yarn@3.4.1",
   "dependencies": {

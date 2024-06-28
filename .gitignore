@@ -17,6 +17,8 @@ stub/*
 !.yarn/sdks
 !.yarn/versions
 
+*.tgz
+
 langchain/docs/
 
 .idea/

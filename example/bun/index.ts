@@ -20,4 +20,4 @@ await unipa.account.login()
 const timetable = await unipa.timetable.fetch()
 console.timeEnd("unipa")
 // BUNのテーブル💩
-// timetable.print()
+timetable.print()
