@@ -3,6 +3,7 @@
 </h1>
 
 <a href="https://pkg-size.dev/open-unipa"><img src="https://pkg-size.dev/badge/install/1358184" title="Install size for open-unipa"></a>
+<a href="https://pkg-size.dev/open-unipa"><img src="https://pkg-size.dev/badge/bundle/260109" title="Bundle size for open-unipa"></a>
 
 - SIMPLE
 - FAST
