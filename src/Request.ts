@@ -1,6 +1,5 @@
 import parse, { HTMLElement } from "node-html-parser";
 import { Session } from "./OpenUNIPA";
-import { readFileSync, writeFileSync } from "./utils/fs";
 import { WindowState, getWindowState } from "./utils/getWindowState";
 
 const getSetCookie = function (headers: Headers) {
@@ -26,7 +25,7 @@ export default class Request {
     let text = ""
     console.info(this.session.DEBUG.stub ? "[STUB ]:" : "[FETCH]:", getCaller(), this.session.univ!.baseUrl + url + (params ? `?${params}` : ""))
     if (this.session.DEBUG.stub) {
-      text = readFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`)
+      text = this.session.fs.readFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`)
     } else {
       const res = await fetch(this.session.univ!.baseUrl + url + (params ? `?${params}` : ""), {
         method,
@@ -50,7 +49,7 @@ export default class Request {
     const element = parse(text)
     const state = getWindowState(text)
 
-    if (this.session.DEBUG.saveHTML) { writeFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`, text) }
+    if (this.session.DEBUG.saveHTML) { this.session.fs.writeFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`, text) }
 
     return { state, element }
   }
@@ -65,7 +64,7 @@ export default class Request {
 
   setStubData(path: string) {
     console.log(path)
-    this.session.element = parse(readFileSync(`stub/${path}.html`))
+    this.session.element = parse(this.session.fs.readFileSync(`stub/${path}.html`))
   }
 }
 

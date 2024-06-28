@@ -12,6 +12,12 @@ const unipa = OpenUNIPA({
   univ: UnivList.KINDAI.HIGASHI_OSAKA,
 })
 
+unipa.fs.readFileSync = (path: string): string => {
+  console.log("BUN FS", path)
+  const readFileSync = require("fs").readFileSync
+  return readFileSync(path, "utf-8")
+}
+
 unipa.DEBUG.stub = true
 // unipa.DEBUG.saveHTML = true
 

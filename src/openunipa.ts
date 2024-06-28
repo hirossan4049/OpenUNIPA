@@ -1,6 +1,7 @@
 import { HTMLElement } from "node-html-parser"
 import Request from "./Request"
 import AccountController from "./account"
+import { FSController } from "./fs"
 import { MenuController } from "./menu"
 import { TimetableController } from "./timetable"
 import { Univ } from "./types/UnivList"
@@ -16,6 +17,8 @@ export type Session = {
   username: string,
   password: string,
   univ: Univ,
+  
+  fs: FSController,
   request: Request,
 
   account: AccountController,
@@ -34,6 +37,8 @@ export function OpenUNIPA({ username, password, univ, debug }: { username: strin
     stub: false,
     saveHTML: false,
   }
+
+  particalSession.fs = new FSController(particalSession as Session)
   particalSession.request = new Request(particalSession as Session)
 
   particalSession.account = new AccountController(particalSession as Session)
