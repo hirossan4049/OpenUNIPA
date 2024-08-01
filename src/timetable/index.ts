@@ -7,14 +7,14 @@ import { TimetableResult } from "./result";
 export class TimetableController extends BaseController {
   async fetch(): Promise<TimetableResult> {
     if (this.session.DEBUG.stub) {
-      this.session.request.setStubData('-up-faces-up-po-Poa00601A.jsp')
+      await this.session.request.setStubData('-up-faces-up-po-Poa00601A.jsptimetable')
     } else {
       const tbItem = this.session.menu.getMenu()["時間割・授業"].find(i => i.title === "学生時間割表")
-      await this.session.menu.click(tbItem!)
+      await this.session.menu.click(tbItem!, "timetable")
     }
-
+    
     let items: TimetableItem[] = []
-
+    
     for (let w = 0; w < 6; w++) {
       for (let p = 0; p < 8; p++) {
         if (p === 0) { continue }

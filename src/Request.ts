@@ -12,6 +12,12 @@ const getSetCookie = function (headers: Headers) {
   return set_cookies
 }
 
+type Props = {
+  method?: "GET" | "POST",
+  fromBody?: string,
+  toBody?: string,
+  name?: string,
+}
 
 export default class Request {
   private cookies = ""
@@ -21,11 +27,11 @@ export default class Request {
     this.session = session
   }
 
-  async fetch(url: string, params?: URLSearchParams, method: "GET" | "POST" = "GET", fromBody = "<body", toBody = "</body>"): Promise<{ state: WindowState, element: HTMLElement }> {
+  async fetch(url: string, params: URLSearchParams | undefined = undefined, { method = "GET", fromBody = "<body", toBody = "</body>", name = "" }: Props): Promise<{ state: WindowState, element: HTMLElement }> {
     let text = ""
-    console.info(this.session.DEBUG.stub ? "[STUB ]:" : "[FETCH]:", getCaller(), this.session.univ!.baseUrl + url + (params ? `?${params}` : ""))
+    console.info(this.session.DEBUG.stub ? "[STUB ]:" : "[FETCH]:", getCaller(), this.session.univ!.baseUrl + url)
     if (this.session.DEBUG.stub) {
-      text = this.session.fs.readFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`)
+      text = await this.session.fs!.readFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}${name}.html`)
     } else {
       const res = await fetch(this.session.univ!.baseUrl + url + (params ? `?${params}` : ""), {
         method,
@@ -49,7 +55,7 @@ export default class Request {
     const element = parse(text)
     const state = getWindowState(text)
 
-    if (this.session.DEBUG.saveHTML) { this.session.fs.writeFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}.html`, text) }
+    if (this.session.DEBUG.saveHTML) { this.session.fs?.writeFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}${name}.html`, text) }
 
     return { state, element }
   }
@@ -62,9 +68,9 @@ export default class Request {
     this.cookies = ""
   }
 
-  setStubData(path: string) {
-    console.log(path)
-    this.session.element = parse(this.session.fs.readFileSync(`stub/${path}.html`))
+  async setStubData(path: string) {
+    const file = await this.session.fs?.readFileSync(`stub/${path}.html`) || ""
+    this.session.element = parse(file)
   }
 }
 
@@ -74,7 +80,7 @@ function getCaller() {
   const stackLines = stack.split('\n');
   const callerIndex = stackLines.findIndex(line => line.includes('getCaller')) + 2;
   if (stackLines[callerIndex]) {
-    return stackLines[callerIndex].trim();
+    return stackLines[callerIndex].trim().split("/").reverse()[0].replace(")", "");
   }
   return 'Unknown';
 }

@@ -18,7 +18,7 @@ export type Session = {
   password: string,
   univ: Univ,
   
-  fs: FSController,
+  fs?: FSController,
   request: Request,
 
   account: AccountController,
@@ -38,7 +38,6 @@ export function OpenUNIPA({ username, password, univ, debug }: { username: strin
     saveHTML: false,
   }
 
-  particalSession.fs = new FSController(particalSession as Session)
   particalSession.request = new Request(particalSession as Session)
 
   particalSession.account = new AccountController(particalSession as Session)

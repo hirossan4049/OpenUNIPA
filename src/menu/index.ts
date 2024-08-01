@@ -47,7 +47,7 @@ export class MenuController extends BaseController {
     return items
   }
 
-  async click(item: Item) {
+  async click(item: Item, name: string = "") {
     const form = this.session.element?.querySelector("form")
     if (!form) { throw new Error("form is not defined") }
     const formLink = form?.getAttribute("action")
@@ -64,7 +64,7 @@ export class MenuController extends BaseController {
       'header:form1': 'header:form1',
     })
 
-    const res = await this.session.request.fetch(formLink!, params, "POST")
+    const res = await this.session.request.fetch(formLink!, params, { method: "POST", name })
     if (res.state !== "success") { throw new Error("failed " + res.state) }
     this.session.element = res.element
   }

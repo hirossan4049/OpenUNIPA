@@ -1,13 +1,17 @@
-import BaseController from "../base";
-
-export class FSController extends BaseController {
-  readFileSync(path: string): string {
-    const readFileSync = require("fs").readFileSync
-    return readFileSync(path, "utf-8")
-  }
-
-  writeFileSync(path: string, text: string) {
-    const writeFileSync = require("fs").writeFileSync
-    return writeFileSync(path, text, "utf-8")
-  }
+export interface FSController {
+  readFileSync(path: string): Promise<string>
+  writeFileSync(path: string, text: string): void
 }
+// export class FSController extends BaseController {
+//   async readFileSync(path: string): Promise<string> {
+//     const fs = await import("fs");
+//     require.context("fs", true)
+//     return await fs.promises.readFile(path, "utf-8");
+//   }
+
+//   async writeFileSync(path: string, text: string) {
+//     const fs = await import("fs")
+//     console.log("FSFSFSREADFIE", fs.writeFileSync)
+//     fs.writeFileSync(path, text)
+//   }
+// }
