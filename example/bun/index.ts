@@ -20,12 +20,15 @@ export class FSController extends BaseController {
 
 unipa.fs = new FSController(unipa)
 
-unipa.DEBUG.stub = true
-// unipa.DEBUG.saveHTML = true
+// unipa.DEBUG.stub = true
+unipa.DEBUG.saveHTML = true
 
 await unipa.account.login()
 
-const timetable = await unipa.timetable.fetch()
+// const timetable = await unipa.timetable.fetch()
 console.timeEnd("unipa")
 
-timetable.print()
+const grades = await unipa.grades.fetch()
+console.log(grades)
+
+// timetable.print()

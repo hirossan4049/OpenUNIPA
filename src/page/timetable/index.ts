@@ -1,5 +1,5 @@
-import BaseController from "../base";
-import { TimetableItem } from "../types/TimeTableItem";
+import BaseController from "../../base";
+import { TimetableItem } from "../../types/TimeTableItem";
 import { TimetableResult } from "./result";
 
 

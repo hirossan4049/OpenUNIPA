@@ -12,6 +12,7 @@
     "@types/node": "^20.12.7",
     "corepack": "^0.28.0",
     "jsmin": "^1.0.1",
+    "node-network-devtools": "^1.0.9",
     "typescript": "^5.4.5",
     "vitest": "^1.5.1"
   },
