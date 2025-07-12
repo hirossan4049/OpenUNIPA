@@ -1,5 +1,8 @@
-import { OpenUNIPA } from "../../OpenUNIPA"
-import { UnivList } from "../../types/UnivList"
+import { OpenUNIPA } from "../../src/OpenUNIPA"
+import { UnivList } from "../../src/types/UnivList"
+import { vi } from 'vitest'
+import { writeFileSync } from 'fs'
+import { readFile } from 'fs/promises'
 
 describe("GradesController", () => {
   let unipa: any
@@ -11,6 +14,16 @@ describe("GradesController", () => {
       univ: UnivList.KINDAI.HIGASHI_OSAKA,
       debug: { stub: true, saveHTML: false }
     })
+
+    // Set up the file system controller for reading stub files
+    unipa.fs = {
+      writeFileSync(path: string, text: string) { 
+        writeFileSync(path, text, { encoding: 'utf-8' }) 
+      },
+      async readFileSync(path: string) {
+        return readFile(path, { encoding: 'utf-8' })
+      }
+    }
   })
 
   test("fetch grades data", async () => {
@@ -25,7 +38,7 @@ describe("GradesController", () => {
     expect(Array.isArray(result.grades)).toBe(true)
     expect(result.grades.length).toBeGreaterThan(0)
     
-    // Check if we have the expected grade data
+    // Check if we have the expected grade data based on real data
     const kinDaiZemi = result.grades.find(grade => grade.subject === "近大ゼミ")
     expect(kinDaiZemi).toBeDefined()
     expect(kinDaiZemi?.year).toBe(2024)
@@ -36,6 +49,13 @@ describe("GradesController", () => {
     expect(kinDaiZemi?.grade).toBe("秀")
     expect(kinDaiZemi?.score).toBe(100)
     expect(kinDaiZemi?.teacher).toBe("石水　隆")
+
+    // Check for additional real courses
+    const programmingBasics = result.grades.find(grade => grade.subject === "プログラミング基礎１")
+    expect(programmingBasics).toBeDefined()
+    expect(programmingBasics?.grade).toBe("秀")
+    expect(programmingBasics?.score).toBe(96)
+    expect(programmingBasics?.teacher).toBe("濵砂　幸裕")
   })
 
   test("calculate GPA", async () => {
@@ -45,6 +65,8 @@ describe("GradesController", () => {
     expect(typeof gpa).toBe("number")
     expect(gpa).toBeGreaterThan(0)
     expect(gpa).toBeLessThanOrEqual(4)
+    // Based on real data, GPA should be around 3.0-3.5 range
+    expect(gpa).toBeGreaterThan(2.5)
   })
 
   test("get passed grades", async () => {
@@ -75,11 +97,13 @@ describe("GradesController", () => {
     
     expect(typeof totalCredits).toBe("number")
     expect(totalCredits).toBeGreaterThan(0)
+    // Based on real data, total credits should be around 31
+    expect(totalCredits).toBeGreaterThan(20)
   })
 
   test("print functionality", async () => {
     const result = await unipa.grades.fetch()
-    const consoleSpy = jest.spyOn(console, 'log').mockImplementation()
+    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
     
     result.print()
     

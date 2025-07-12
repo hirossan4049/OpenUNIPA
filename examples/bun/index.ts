@@ -21,7 +21,7 @@ export class FSController extends BaseController {
 unipa.fs = new FSController(unipa)
 
 // unipa.DEBUG.stub = true
-unipa.DEBUG.saveHTML = true
+unipa.DEBUG.saveHTML = false
 
 await unipa.account.login()
 

@@ -1,4 +1,4 @@
-import BaseController from "../base";
+import BaseController from "../../base";
 
 export default class AccountController extends BaseController {
   async login() {

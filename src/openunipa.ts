@@ -1,10 +1,10 @@
 import { HTMLElement } from "node-html-parser"
 import Request from "./Request"
-import AccountController from "./account"
-import { FSController } from "./fs"
-import { MenuController } from "./menu"
-import { GradesController } from "./page/grades"
-import { TimetableController } from "./page/timetable"
+import AccountController from "./controllers/account"
+import { FSController } from "./controllers/fs"
+import { MenuController } from "./controllers/menu"
+import { GradesController } from "./controllers/grades"
+import { TimetableController } from "./controllers/timetable"
 import { Univ } from "./types/UnivList"
 
 type DebugOption = {

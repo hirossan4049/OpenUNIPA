@@ -10,6 +10,9 @@ yarn-error.log
 docs/_dist/
 stub/*
 
+# HTML files
+*.html
+
 .yarn/*
 !.yarn/patches
 !.yarn/plugins

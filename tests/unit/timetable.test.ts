@@ -1,7 +1,7 @@
 import { writeFileSync } from 'fs';
 import { readFile } from 'fs/promises';
 import { expect, test } from 'vitest';
-import { OpenUNIPA, UnivList } from "../../";
+import { OpenUNIPA, UnivList } from "../../src/";
 
 test('timetable', async () => {
   const username = process.env.UNIPA_USER_ID || 'username'

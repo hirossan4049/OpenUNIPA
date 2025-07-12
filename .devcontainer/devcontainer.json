@@ -1,0 +1,23 @@
+{
+	"name": "OpenUNIPA",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".."
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"ms-ceintl.vscode-language-pack-ja",
+				"ms-vscode.js-debug",
+				"ms-vscode.vscode-typescript-next",
+				"vitest.explorer"
+			]
+		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {},
+		"ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
+	}
+}

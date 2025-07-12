@@ -31,7 +31,7 @@ export default class Request {
     let text = ""
     console.info(this.session.DEBUG.stub ? "[STUB]:" : "[FETCH]:", getCaller(), this.session.univ!.baseUrl + url + "?" + params)
     if (this.session.DEBUG.stub) {
-      text = await this.session.fs!.readFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}${name}.html`)
+      text = await this.session.fs!.readFileSync(`tests/fixtures/stub/${encodeURI(url).replaceAll("/", "-")}${name}.html`)
     } else {
       const res = await fetch(this.session.univ!.baseUrl + url + (params ? `?${params}` : ""), {
         method,
@@ -45,7 +45,7 @@ export default class Request {
       this.cookies += getSetCookie(res.headers).map((cookie) => cookie.split(";")[0]).join("; ")
       text = await res.text()
     }
-    if (this.session.DEBUG.saveHTML) { this.session.fs?.writeFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}${name}.html`, text) }
+    if (this.session.DEBUG.saveHTML) { this.session.fs?.writeFileSync(`tests/fixtures/stub/${encodeURI(url).replaceAll("/", "-")}${name}.html`, text) }
     
     const existLowerBody = text.indexOf(fromBody) !== -1
     text = text //html_beautify(text, { indent_size: 2 })
@@ -72,7 +72,7 @@ export default class Request {
   }
 
   async setStubData(path: string) {
-    const file = await this.session.fs?.readFileSync(`stub/${path}.html`) || ""
+    const file = await this.session.fs?.readFileSync(`tests/fixtures/stub/${path}.html`) || ""
     this.session.element = parse(file)
   }
 }
