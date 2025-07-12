@@ -6,6 +6,7 @@ import { MenuController } from "./controllers/menu"
 import { GradesController } from "./controllers/grades"
 import { TimetableController } from "./controllers/timetable"
 import { AttendanceController } from "./controllers/attendance"
+import { NoticeController } from "./controllers/notice"
 import { Univ } from "./types/UnivList"
 
 type DebugOption = {
@@ -28,6 +29,7 @@ export type Session = {
   timetable: TimetableController,
   grades: GradesController,
   attendance: AttendanceController,
+  notice: NoticeController,
 }
 
 export function OpenUNIPA({ username, password, univ, debug }: { username: string, password: string, univ: Univ, debug?: DebugOption }) {
@@ -49,6 +51,7 @@ export function OpenUNIPA({ username, password, univ, debug }: { username: strin
   particalSession.timetable = new TimetableController(particalSession as Session)
   particalSession.grades = new GradesController(particalSession as Session)
   particalSession.attendance = new AttendanceController(particalSession as Session)
+  particalSession.notice = new NoticeController(particalSession as Session)
 
   return particalSession as Session
 }
