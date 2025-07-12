@@ -1,6 +1,6 @@
 {
   "name": "open-unipa",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Open Unipa",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
