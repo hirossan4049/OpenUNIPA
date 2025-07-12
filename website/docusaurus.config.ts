@@ -4,8 +4,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'OpenUNIPA',
-  tagline: 'Open source library for Kindai University UNIPA system',
-  favicon: 'img/favicon.ico',
+  tagline: '近畿大学UNIPA用の高速・軽量TypeScriptライブラリ',
+  favicon: 'img/logo.png',
 
   // Set the production url of your site here
   url: 'https://hirossan4049.github.io',
@@ -56,12 +56,14 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/logo.png',
     navbar: {
       title: 'OpenUNIPA',
       logo: {
         alt: 'OpenUNIPA Logo',
-        src: 'img/logo.svg',
+        src: 'img/logo.png',
+        width: 32,
+        height: 32,
       },
       items: [
         {
