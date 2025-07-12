@@ -26,7 +26,6 @@
   },
   "packageManager": "yarn@3.4.1",
   "dependencies": {
-    "node-html-parser": "^6.1.13",
-    "undici": "^7.11.0"
+    "node-html-parser": "^6.1.13"
   }
 }
