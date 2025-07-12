@@ -69,8 +69,67 @@ export class MenuController extends BaseController {
     this.session.element = res.element
   }
 
-  // findClick(title: string) { }
+  /**
+   * 学生メニューを取得
+   */
+  async getStudentMenu(): Promise<Array<{title: string, url: string}>> {
+    if (this.session.DEBUG.stub) {
+      // スタブモードでは固定のメニューを返す
+      return [
+        { title: '出席状況確認', url: '/up/faces/up/po/Poa00701A.jsp' },
+        { title: '成績照会', url: '/up/faces/up/po/Poa00601A.jsp' },
+        { title: '時間割表', url: '/up/faces/up/xu/Xuk00301A.jsp' }
+      ]
+    }
 
+    const menu = this.getMenu()
+    const studentMenuItems: Array<{title: string, url: string}> = []
+    
+    // メニューから学生関連項目を抽出
+    Object.values(menu).flat().forEach(item => {
+      if (item.link && item.title) {
+        // 出席、成績、時間割関連のメニューを抽出
+        if (item.title.includes('出席') || 
+            item.title.includes('成績') || 
+            item.title.includes('時間割') ||
+            item.title.includes('attendance') ||
+            item.title.includes('grade') ||
+            item.title.includes('timetable') ||
+            item.title.includes('出欠')) {
+          studentMenuItems.push({
+            title: item.title,
+            url: item.link  // 実際のリンクを使用（URLに変換しない）
+          })
+        }
+      }
+    })
+    
+    return studentMenuItems
+  }
+
+  /**
+   * メニューナビゲーション（学生メニューへ）
+   */
+  async navigateToStudentMenu(): Promise<void> {
+    // スタブモードでは何もしない
+    if (this.session.DEBUG.stub) {
+      return
+    }
+    
+    // 実際のメニューナビゲーション処理を実装
+    // 現在のページが学生メニューでない場合は移動
+  }
+
+  /**
+   * リンクをURLに変換
+   */
+  private convertLinkToUrl(link: string): string {
+    // onclick="form_submit('123','456')" のような形式からURLを推定
+    if (link.includes('Poa00701A')) return '/up/faces/up/po/Poa00701A.jsp'
+    if (link.includes('Poa00601A')) return '/up/faces/up/po/Poa00601A.jsp'
+    if (link.includes('Xuk00301A')) return '/up/faces/up/xu/Xuk00301A.jsp'
+    return '/up/faces/menu.jsp'
+  }
 
   objects() { }
 
