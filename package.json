@@ -9,9 +9,11 @@
     "dist"
   ],
   "devDependencies": {
-    "@types/node": "^20.12.7",
+    "@types/node": "^24.0.13",
     "corepack": "^0.28.0",
+    "dotenv": "^17.2.0",
     "jsmin": "^1.0.1",
+    "node-network-devtools": "^1.0.9",
     "typescript": "^5.4.5",
     "vitest": "^1.5.1"
   },
@@ -24,6 +26,7 @@
   },
   "packageManager": "yarn@3.4.1",
   "dependencies": {
-    "node-html-parser": "^6.1.13"
+    "node-html-parser": "^6.1.13",
+    "undici": "^7.11.0"
   }
 }

@@ -25,14 +25,32 @@ $ yarn add open-unipa
 
 ## Usage
 
-```ts
-import { OpenUNIPA } from 'open-unipa';
+### 環境変数の設定
 
-const unipa = new OpenUNIPA({
-  username: "2412110000a",
-  password: "password",
+1. `.env.example` を `.env` にコピー:
+   ```bash
+   cp examples/.env.example .env
+   ```
+
+2. `.env` ファイルを編集して認証情報を設定:
+   ```env
+   UNIPA_USER_ID=your_unipa_username
+   UNIPA_PLAIN_PASSWORD=your_unipa_password
+   ```
+
+### コード例
+
+```ts
+import { OpenUNIPA, UnivList } from 'open-unipa';
+
+// 環境変数から認証情報を取得
+const unipa = OpenUNIPA({
+  username: process.env.UNIPA_USER_ID!,
+  password: process.env.UNIPA_PLAIN_PASSWORD!,
   univ: UnivList.KINDAI.HIGASHI_OSAKA,
 })
+
+// ログイン
 await unipa.account.login()
 
 const timetable = await unipa.timetable.fetch()
@@ -48,6 +66,25 @@ console.log(timetable.items)
 //   syllabus: { year: '2024', id: 'N1124C0218' } // シラバス情報
 // },
 ```
+
+### デモの実行
+
+スタブモード（テストデータ使用）:
+```bash
+npx tsx examples/typescript/stub-demo.ts
+```
+
+実際のデータ使用（要環境変数設定）:
+```bash
+npx tsx examples/typescript/real-api-demo.ts
+```
+
+## 主な機能
+
+- **ログイン認証**: UNIPAシステムへの自動ログイン
+- **時間割取得**: 現在の時間割データを取得・表示
+- **成績照会**: 成績データの取得、GPA計算、単位集計
+- **メニュー操作**: UNIPAの各種メニューへのアクセス
 
 ## 計測
 

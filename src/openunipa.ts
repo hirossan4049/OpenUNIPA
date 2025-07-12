@@ -1,9 +1,10 @@
 import { HTMLElement } from "node-html-parser"
 import Request from "./Request"
-import AccountController from "./account"
-import { FSController } from "./fs"
-import { MenuController } from "./menu"
-import { TimetableController } from "./timetable"
+import AccountController from "./controllers/account"
+import { FSController } from "./controllers/fs"
+import { MenuController } from "./controllers/menu"
+import { GradesController } from "./controllers/grades"
+import { TimetableController } from "./controllers/timetable"
 import { Univ } from "./types/UnivList"
 
 type DebugOption = {
@@ -17,13 +18,14 @@ export type Session = {
   username: string,
   password: string,
   univ: Univ,
-  
+
   fs?: FSController,
   request: Request,
 
   account: AccountController,
   menu: MenuController,
   timetable: TimetableController,
+  grades: GradesController,
 }
 
 export function OpenUNIPA({ username, password, univ, debug }: { username: string, password: string, univ: Univ, debug?: DebugOption }) {
@@ -43,6 +45,7 @@ export function OpenUNIPA({ username, password, univ, debug }: { username: strin
   particalSession.account = new AccountController(particalSession as Session)
   particalSession.menu = new MenuController(particalSession as Session)
   particalSession.timetable = new TimetableController(particalSession as Session)
+  particalSession.grades = new GradesController(particalSession as Session)
 
   return particalSession as Session
 }

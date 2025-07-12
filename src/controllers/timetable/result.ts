@@ -1,4 +1,4 @@
-import { TimetableItem } from "../types/TimeTableItem";
+import { TimetableItem } from "../../types/TimeTableItem";
 
 export class TimetableResult {
   items: TimetableItem[];

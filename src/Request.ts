@@ -29,9 +29,9 @@ export default class Request {
 
   async fetch(url: string, params: URLSearchParams | undefined = undefined, { method = "GET", fromBody = "<body", toBody = "</body>", name = "" }: Props): Promise<{ state: WindowState, element: HTMLElement }> {
     let text = ""
-    console.info(this.session.DEBUG.stub ? "[STUB ]:" : "[FETCH]:", getCaller(), this.session.univ!.baseUrl + url)
+    console.info(this.session.DEBUG.stub ? "[STUB]:" : "[FETCH]:", getCaller(), this.session.univ!.baseUrl + url + "?" + params)
     if (this.session.DEBUG.stub) {
-      text = await this.session.fs!.readFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}${name}.html`)
+      text = await this.session.fs!.readFileSync(`tests/fixtures/stub/${encodeURI(url).replaceAll("/", "-")}${name}.html`)
     } else {
       const res = await fetch(this.session.univ!.baseUrl + url + (params ? `?${params}` : ""), {
         method,
@@ -40,22 +40,25 @@ export default class Request {
           "Cookie": this.cookies,
         },
         // mode: "cors",
-        // body: body,
+        body: params?.toString(),
       })
       this.cookies += getSetCookie(res.headers).map((cookie) => cookie.split(";")[0]).join("; ")
       text = await res.text()
     }
+    if (this.session.DEBUG.saveHTML) { this.session.fs?.writeFileSync(`tests/fixtures/stub/${encodeURI(url).replaceAll("/", "-")}${name}.html`, text) }
+    
+    const existLowerBody = text.indexOf(fromBody) !== -1
     text = text //html_beautify(text, { indent_size: 2 })
-      .slice(text.indexOf(fromBody), text.lastIndexOf(toBody) + toBody.length)
-      .replaceAll(/<script[^>]*>([\s\S]*?)<\/script>/gi, '')
+    .slice(existLowerBody ? text.indexOf(fromBody) : text.indexOf(fromBody.toUpperCase()),
+    (existLowerBody ? text.lastIndexOf(toBody) : text.lastIndexOf(toBody.toUpperCase())) + toBody.length)
+    .replaceAll(/<script[^>]*>([\s\S]*?)<\/script>/gi, '')
     // .replaceAll("&nbsp;", "")
-
+    
     // const element = parse(text.slice(text.indexOf(fromBody), text.lastIndexOf(toBody) + toBody.length))
     // console.log(fromBody, toBody)
     const element = parse(text)
     const state = getWindowState(text)
 
-    if (this.session.DEBUG.saveHTML) { this.session.fs?.writeFileSync(`stub/${encodeURI(url).replaceAll("/", "-")}${name}.html`, text) }
 
     return { state, element }
   }
@@ -69,7 +72,7 @@ export default class Request {
   }
 
   async setStubData(path: string) {
-    const file = await this.session.fs?.readFileSync(`stub/${path}.html`) || ""
+    const file = await this.session.fs?.readFileSync(`tests/fixtures/stub/${path}.html`) || ""
     this.session.element = parse(file)
   }
 }
