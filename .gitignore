@@ -47,5 +47,11 @@ Chinook_Sqlite.sql
 docs/build/
 docs/api_refs/typedoc.json
 
+# Website/Docusaurus
+website/node_modules/
+website/build/
+website/.docusaurus/
+website/package-lock.json
+
 .tool-versions
 credentials.json
