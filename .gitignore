@@ -30,6 +30,10 @@ langchain/docs/
 .idea/
 
 .DS_Store
+**/.DS_Store
+
+# Examples node_modules
+examples/*/node_modules/
 
 Chinook.db
 Chinook_Sqlite.sql
