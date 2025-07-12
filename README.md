@@ -14,7 +14,7 @@
 
 ## Features
 
-- **Fast** - ~86ms stub mode, ~1.2s real API
+- **Fast** - Sub-second response times
 - **Simple** - Clean, intuitive API
 - **Type-safe** - Full TypeScript support
 - **Comprehensive** - Timetable, grades, attendance, notices
