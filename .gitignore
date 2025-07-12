@@ -13,6 +13,9 @@ stub/*
 # HTML files
 *.html
 
+# Claude settings
+.claude/
+
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
