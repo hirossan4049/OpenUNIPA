@@ -26,7 +26,7 @@ jobs:
         node-version: '18'
 
     - name: Install dependencies
-      run: cd website && npm ci
+      run: cd website && npm install
 
     - name: Build website
       run: cd website && npm run build
