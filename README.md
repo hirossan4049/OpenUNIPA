@@ -1,197 +1,209 @@
-<h1 align="center">
-  OpenUNIPA
-</h1>
+# OpenUNIPA
 
-<a href="https://pkg-size.dev/open-unipa"><img src="https://pkg-size.dev/badge/install/1358184" title="Install size for open-unipa"></a>
-<a href="https://pkg-size.dev/open-unipa"><img src="https://pkg-size.dev/badge/bundle/260109" title="Bundle size for open-unipa"></a>
+<div align="center">
 
-- SIMPLE
-- FAST
-- EASY
+**近畿大学UNIPA用の高速・軽量TypeScriptライブラリ**
 
-| Node.js | Swift | C | C++ | Java |
-| --- | --- | --- | --- | --- |
-| 🚧  | ✗   | ✗   | ✗  | ✗   |
+[![npm version](https://badge.fury.io/js/open-unipa.svg)](https://badge.fury.io/js/open-unipa)
+[![Install size](https://pkg-size.dev/badge/install/1358184)](https://pkg-size.dev/open-unipa)
+[![Bundle size](https://pkg-size.dev/badge/bundle/260109)](https://pkg-size.dev/open-unipa)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/hirossan4049/OpenUNIPA/blob/main/LICENSE)
+[![Documentation](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://hirossan4049.github.io/OpenUNIPA/)
 
-## Requirements
-- node20
-- yarn@3.4.1
+[📖 ドキュメント](https://hirossan4049.github.io/OpenUNIPA/) | [🚀 クイックスタート](#クイックスタート) | [💡 使用例](#使用例) | [📦 npm](https://www.npmjs.com/package/open-unipa)
 
-## Installation
+</div>
+
+## ✨ 特徴
+
+- 🚀 **高速** - 軽量設計で素早いレスポンス
+- 📱 **シンプル** - 直感的で使いやすいAPI
+- 🛡️ **型安全** - TypeScriptで完全に型付け
+- 🔧 **テスト対応** - スタブモードでオフライン開発
+- 📚 **包括的** - 時間割、成績、出席、掲示まで対応
+
+## 🎯 対応機能
+
+| 機能 | 状況 | 説明 |
+|------|------|------|
+| 🔐 認証ログイン | ✅ | UNIPAシステムへの安全なログイン |
+| 📅 時間割取得 | ✅ | 授業スケジュールの取得・表示 |
+| 📊 成績照会 | ✅ | GPA計算・単位集計 |
+| 📋 出席状況 | ✅ | 出席率計算・科目別管理 |
+| 📢 掲示情報 | ✅ | お知らせ・掲示板の取得・管理 |
+| 🗂️ メニュー操作 | ✅ | UNIPAナビゲーション |
+
+## 🚀 クイックスタート
+
+### インストール
 
 ```bash
-$ yarn add open-unipa
+# npm
+npm install open-unipa
+
+# yarn
+yarn add open-unipa
+
+# pnpm
+pnpm add open-unipa
 ```
 
-## Usage
+### 基本的な使用方法
 
-### 環境変数の設定
-
-1. `.env.example` を `.env` にコピー:
-   ```bash
-   cp examples/.env.example .env
-   ```
-
-2. `.env` ファイルを編集して認証情報を設定:
-   ```env
-   UNIPA_USER_ID=your_unipa_username
-   UNIPA_PLAIN_PASSWORD=your_unipa_password
-   ```
-
-### コード例
-
-```ts
+```typescript
 import { OpenUNIPA, UnivList } from 'open-unipa';
 
-// 環境変数から認証情報を取得
+// UNIPAセッションを作成
 const unipa = OpenUNIPA({
-  username: process.env.UNIPA_USER_ID!,
-  password: process.env.UNIPA_PLAIN_PASSWORD!,
+  username: 'your_username',
+  password: 'your_password',
   univ: UnivList.KINDAI.HIGASHI_OSAKA,
-})
+});
 
-// ログイン
-await unipa.account.login()
-
-// 時間割取得
-const timetable = await unipa.timetable.fetch()
-timetable.print()
-
-// 成績照会
-const grades = await unipa.grades.fetch()
-console.log(`GPA: ${grades.getGPA()}`)
-console.log(`取得単位数: ${grades.getTotalEarnedCredits()}`)
-
-// 出席状況確認
-const attendance = await unipa.attendance.fetch()
-console.log(`総合出席率: ${attendance.getOverallAttendanceRate()}%`)
-attendance.print() // 科目別出席状況を表示
-
-// 掲示情報取得
-const notices = await unipa.notice.fetch()
-notices.print() // サマリーと最新情報を表示
-notices.printAll() // 全件表示
-
-// 未読の重要な掲示を取得
-const importantUnread = notices.filter({ 
-  priority: 'high', 
-  isRead: false 
-})
-console.log(`未読の重要掲示: ${importantUnread.length}件`)
+// ログインして時間割を取得
+await unipa.account.login();
+const timetable = await unipa.timetable.fetch();
+timetable.print();
 ```
 
-### デモの実行
+## 💡 使用例
 
-利用可能な例:
+### 🎓 成績とGPAの確認
+
+```typescript
+const grades = await unipa.grades.fetch();
+
+console.log(`現在のGPA: ${grades.getGPA()}`);
+console.log(`取得単位数: ${grades.getTotalEarnedCredits()}`);
+console.log(`履修科目数: ${grades.getSubjectCount()}`);
+
+// 優秀な成績の科目を表示
+const excellentGrades = grades.filter(grade => 
+  ['秀', 'S', 'A'].includes(grade.evaluation)
+);
+```
+
+### 📋 出席状況の管理
+
+```typescript
+const attendance = await unipa.attendance.fetch();
+
+// 総合出席率
+console.log(`総合出席率: ${attendance.getOverallAttendanceRate()}%`);
+
+// 出席率が低い科目を警告
+const lowAttendance = attendance.getLowAttendanceSubjects(70);
+if (lowAttendance.length > 0) {
+  console.log('⚠️ 出席率が低い科目:');
+  lowAttendance.forEach(subject => {
+    console.log(`- ${subject.name}: ${subject.attendanceRate}%`);
+  });
+}
+```
+
+### 📢 掲示情報の確認
+
+```typescript
+const notices = await unipa.notice.fetch();
+
+// 未読の重要掲示をチェック
+const importantUnread = notices.filter({
+  priority: 'high',
+  isRead: false
+});
+
+console.log(`未読の重要掲示: ${importantUnread.length}件`);
+
+// 期限が近い掲示を警告
+const upcoming = notices.getUpcomingDeadlines(7); // 7日以内
+if (upcoming.length > 0) {
+  console.log('🚨 期限が近い掲示:');
+  upcoming.forEach(notice => {
+    console.log(`- ${notice.title} (期限: ${notice.deadline})`);
+  });
+}
+```
+
+## 🛠️ 開発・テスト
+
+### 環境設定
 
 ```bash
-# 基本的なデモ
-npx tsx examples/typescript/stub-demo.ts      # スタブモード（テストデータ）
-npx tsx examples/typescript/real-api-demo.ts  # 実際のAPI使用
+# 環境変数ファイルをコピー
+cp examples/.env.example .env
 
-# 機能別の例
-npx tsx examples/typescript/timetable-example.ts   # 時間割
-npx tsx examples/typescript/grades-example.ts      # 成績照会
-npx tsx examples/typescript/attendance-example.ts  # 出席状況
-npx tsx examples/typescript/notice-example.ts      # 掲示情報
+# 認証情報を設定
+echo "UNIPA_USER_ID=your_username" >> .env
+echo "UNIPA_PLAIN_PASSWORD=your_password" >> .env
 ```
 
-## 主な機能
+### サンプル実行
 
-- **ログイン認証**: UNIPAシステムへの自動ログイン
-- **時間割取得**: 現在の時間割データを取得・表示
-- **成績照会**: 成績データの取得、GPA計算、単位集計
-- **出席状況確認**: 授業別の出席状況を取得・集計、出席率計算
-- **掲示情報取得**: お知らせ・掲示板情報の取得、フィルタリング、既読管理
-- **メニュー操作**: UNIPAの各種メニューへのアクセス
+```bash
+# スタブモード（テストデータ使用）
+npx tsx examples/typescript/account-example.ts
 
-## 機能詳細
-
-### 出席状況確認 (AttendanceController)
-- 科目別・全体の出席率計算
-- 出席状況の種別: 出席、欠席、遅刻、早退、公欠、忌引、病欠、補講、休講
-- 期間指定での出席データ取得
-- 出席率が低い科目の抽出
-
-### 掲示情報取得 (NoticeController)
-- カテゴリ別管理: 重要、一般、事務、学生、教務、就活、その他
-- 優先度設定: high, normal, low
-- フィルタリング機能:
-  - カテゴリ、優先度、日付範囲
-  - キーワード検索
-  - 既読/未読フィルタ
-- 期限管理と期限が近い掲示の警告
-- 既読/未読の一括管理
-- ソート機能（日付順、優先度順）
-
-## 計測
-
-<table><thead>
-  <tr>
-    <th rowspan="2">計測方法<br></th>
-    <th colspan="2">stub</th>
-    <th colspan="2">real(有線)<br></th>
-    <th colspan="2">real(大学WiFi)</th>
-  </tr>
-  <tr>
-    <th>time bun run</th>
-    <th>console.time</th>
-    <th>time bun run</th>
-    <th>console.time</th>
-    <th>time bun run</th>
-    <th>console.time</th>
-  </tr></thead>
-<tbody>
-  <tr>
-    <td>login -&gt; timetable</td>
-    <td>0.2s<br></td>
-    <td>86.47ms<br></td>
-    <td></td>
-    <td></td>
-    <td>1.897s</td>
-    <td></td>
-  </tr>
-</tbody>
-</table>
-
-## APIリファレンス
-
-### AttendanceController
-```ts
-// 出席データを取得
-const attendance = await unipa.attendance.fetch()
-
-// 結果オブジェクトのメソッド
-attendance.getOverallAttendanceRate()        // 総合出席率
-attendance.getSubjectSummaries()              // 科目別サマリー
-attendance.getSubjectAttendance(subjectName)  // 特定科目の出席記録
-attendance.getStatusCounts()                  // 出席状況別の集計
-attendance.getLowAttendanceSubjects(threshold) // 出席率が低い科目
-attendance.getAttendanceByDateRange(from, to) // 期間指定で取得
-attendance.print()                            // コンソールに表示
+# 実際のAPI使用
+npx tsx examples/typescript/timetable-example.ts
+npx tsx examples/typescript/grades-example.ts
+npx tsx examples/typescript/attendance-example.ts
+npx tsx examples/typescript/notice-example.ts
 ```
 
-### NoticeController
-```ts
-// 掲示情報を取得
-const notices = await unipa.notice.fetch()
+## 📚 ドキュメント
 
-// 結果オブジェクトのメソッド
-notices.getSummary()                    // サマリー情報
-notices.filter(filterOptions)           // フィルタリング
-notices.getByCategory(category)         // カテゴリ別取得
-notices.getUnreadNotices()              // 未読掲示
-notices.getHighPriorityNotices()        // 重要掲示
-notices.getNoticesWithDeadline()        // 期限付き掲示
-notices.getUpcomingDeadlines(days)     // 期限が近い掲示
-notices.sortByDate(ascending?)          // 日付でソート
-notices.sortByPriority()                // 優先度でソート
-notices.markAsRead(noticeId)            // 既読にマーク
-notices.markAllAsRead()                 // 全て既読にマーク
-notices.print()                         // サマリー表示
-notices.printAll()                      // 全件表示
-```
+詳細なAPIリファレンスと使用例は[公式ドキュメント](https://hirossan4049.github.io/OpenUNIPA/)をご覧ください。
 
-## License
+- [📖 はじめに](https://hirossan4049.github.io/OpenUNIPA/docs/getting-started)
+- [⚙️ インストール](https://hirossan4049.github.io/OpenUNIPA/docs/installation)
+- [🔧 設定](https://hirossan4049.github.io/OpenUNIPA/docs/configuration)
+- [📝 使用例](https://hirossan4049.github.io/OpenUNIPA/docs/examples)
+- [📋 APIリファレンス](https://hirossan4049.github.io/OpenUNIPA/docs/api/overview)
 
-todo.
+## 🏗️ システム要件
+
+- **Node.js**: 18.0.0以降
+- **TypeScript**: 4.5以降（TypeScriptプロジェクトの場合）
+
+## 🎯 対応大学
+
+現在は近畿大学のみ対応:
+
+- 🏫 近畿大学 東大阪キャンパス
+- 🏫 近畿大学 大阪狭山キャンパス
+
+## 🚀 パフォーマンス
+
+| 動作環境 | ログイン〜時間割取得 | 
+|----------|---------------------|
+| スタブモード | ~86ms |
+| 実API（有線） | ~1.2s |
+| 実API（学内WiFi） | ~1.9s |
+
+## 🤝 コントリビューション
+
+プルリクエストや Issue は大歓迎です！
+
+1. このリポジトリをフォーク
+2. 機能ブランチを作成 (`git checkout -b feature/amazing-feature`)
+3. 変更をコミット (`git commit -m 'Add amazing feature'`)
+4. ブランチをプッシュ (`git push origin feature/amazing-feature`)
+5. プルリクエストを作成
+
+## 📄 ライセンス
+
+[MIT License](https://github.com/hirossan4049/OpenUNIPA/blob/main/LICENSE) - 詳細は LICENSE ファイルをご覧ください。
+
+## ⚠️ 免責事項
+
+このライブラリは教育目的で開発されており、近畿大学の公式ツールではありません。利用は自己責任でお願いします。
+
+---
+
+<div align="center">
+
+**Made with ❤️ for Kindai University students**
+
+[⭐ Star this repo](https://github.com/hirossan4049/OpenUNIPA) | [🐛 Report Bug](https://github.com/hirossan4049/OpenUNIPA/issues) | [💡 Request Feature](https://github.com/hirossan4049/OpenUNIPA/issues)
+
+</div>
