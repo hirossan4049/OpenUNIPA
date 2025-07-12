@@ -53,30 +53,47 @@ const unipa = OpenUNIPA({
 // ログイン
 await unipa.account.login()
 
+// 時間割取得
 const timetable = await unipa.timetable.fetch()
 timetable.print()
-console.log(timetable.items)
-// [{
-//   week: 0, // 0: 月曜日, 1: 火曜日...
-//   period: 1, // 0: 1限目, 1: 2限目...
-//   subject: '基礎線形代数学１', // 科目名
-//   class: 'Aクラス', // クラス名?
-//   teacher: '山田 武士', // 教員名?
-//   room: 'E-101', // 教室名?
-//   syllabus: { year: '2024', id: 'N1124C0218' } // シラバス情報
-// },
+
+// 成績照会
+const grades = await unipa.grades.fetch()
+console.log(`GPA: ${grades.getGPA()}`)
+console.log(`取得単位数: ${grades.getTotalEarnedCredits()}`)
+
+// 出席状況確認
+const attendance = await unipa.attendance.fetch()
+console.log(`総合出席率: ${attendance.getOverallAttendanceRate()}%`)
+attendance.print() // 科目別出席状況を表示
+
+// 掲示情報取得
+const notices = await unipa.notice.fetch()
+notices.print() // サマリーと最新情報を表示
+notices.printAll() // 全件表示
+
+// 未読の重要な掲示を取得
+const importantUnread = notices.filter({ 
+  priority: 'high', 
+  isRead: false 
+})
+console.log(`未読の重要掲示: ${importantUnread.length}件`)
 ```
 
 ### デモの実行
 
-スタブモード（テストデータ使用）:
-```bash
-npx tsx examples/typescript/stub-demo.ts
-```
+利用可能な例:
 
-実際のデータ使用（要環境変数設定）:
 ```bash
-npx tsx examples/typescript/real-api-demo.ts
+# 基本的なデモ
+npx tsx examples/typescript/stub-demo.ts      # スタブモード（テストデータ）
+npx tsx examples/typescript/real-api-demo.ts  # 実際のAPI使用
+
+# 機能別の例
+npx tsx examples/typescript/timetable-example.ts   # 時間割
+npx tsx examples/typescript/grades-example.ts      # 成績照会
+npx tsx examples/typescript/attendance-example.ts  # 出席状況
+npx tsx examples/typescript/notice-example.ts      # 掲示情報
 ```
 
 ## 主な機能
@@ -84,7 +101,28 @@ npx tsx examples/typescript/real-api-demo.ts
 - **ログイン認証**: UNIPAシステムへの自動ログイン
 - **時間割取得**: 現在の時間割データを取得・表示
 - **成績照会**: 成績データの取得、GPA計算、単位集計
+- **出席状況確認**: 授業別の出席状況を取得・集計、出席率計算
+- **掲示情報取得**: お知らせ・掲示板情報の取得、フィルタリング、既読管理
 - **メニュー操作**: UNIPAの各種メニューへのアクセス
+
+## 機能詳細
+
+### 出席状況確認 (AttendanceController)
+- 科目別・全体の出席率計算
+- 出席状況の種別: 出席、欠席、遅刻、早退、公欠、忌引、病欠、補講、休講
+- 期間指定での出席データ取得
+- 出席率が低い科目の抽出
+
+### 掲示情報取得 (NoticeController)
+- カテゴリ別管理: 重要、一般、事務、学生、教務、就活、その他
+- 優先度設定: high, normal, low
+- フィルタリング機能:
+  - カテゴリ、優先度、日付範囲
+  - キーワード検索
+  - 既読/未読フィルタ
+- 期限管理と期限が近い掲示の警告
+- 既読/未読の一括管理
+- ソート機能（日付順、優先度順）
 
 ## 計測
 
@@ -115,6 +153,44 @@ npx tsx examples/typescript/real-api-demo.ts
   </tr>
 </tbody>
 </table>
+
+## APIリファレンス
+
+### AttendanceController
+```ts
+// 出席データを取得
+const attendance = await unipa.attendance.fetch()
+
+// 結果オブジェクトのメソッド
+attendance.getOverallAttendanceRate()        // 総合出席率
+attendance.getSubjectSummaries()              // 科目別サマリー
+attendance.getSubjectAttendance(subjectName)  // 特定科目の出席記録
+attendance.getStatusCounts()                  // 出席状況別の集計
+attendance.getLowAttendanceSubjects(threshold) // 出席率が低い科目
+attendance.getAttendanceByDateRange(from, to) // 期間指定で取得
+attendance.print()                            // コンソールに表示
+```
+
+### NoticeController
+```ts
+// 掲示情報を取得
+const notices = await unipa.notice.fetch()
+
+// 結果オブジェクトのメソッド
+notices.getSummary()                    // サマリー情報
+notices.filter(filterOptions)           // フィルタリング
+notices.getByCategory(category)         // カテゴリ別取得
+notices.getUnreadNotices()              // 未読掲示
+notices.getHighPriorityNotices()        // 重要掲示
+notices.getNoticesWithDeadline()        // 期限付き掲示
+notices.getUpcomingDeadlines(days)     // 期限が近い掲示
+notices.sortByDate(ascending?)          // 日付でソート
+notices.sortByPriority()                // 優先度でソート
+notices.markAsRead(noticeId)            // 既読にマーク
+notices.markAllAsRead()                 // 全て既読にマーク
+notices.print()                         // サマリー表示
+notices.printAll()                      // 全件表示
+```
 
 ## License
 
