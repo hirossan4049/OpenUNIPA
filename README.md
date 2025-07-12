@@ -2,37 +2,37 @@
 
 <div align="center">
 
-**Fast, lightweight TypeScript library for Kindai University UNIPA**
+**近畿大学UNIPA用の高速・軽量TypeScriptライブラリ**
 
 [![npm](https://img.shields.io/npm/v/open-unipa)](https://www.npmjs.com/package/open-unipa)
 [![size](https://pkg-size.dev/badge/bundle/260109)](https://pkg-size.dev/open-unipa)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-[Documentation](https://hirossan4049.github.io/OpenUNIPA/) • [Examples](#examples) • [API](#api)
+[ドキュメント](https://hirossan4049.github.io/OpenUNIPA/) • [使用例](#使用例) • [API](#api)
 
 </div>
 
-## Features
+## 特徴
 
-- **Fast** - Sub-second response times
-- **Simple** - Clean, intuitive API
-- **Type-safe** - Full TypeScript support
-- **Comprehensive** - Timetable, grades, attendance, notices
+- **高速** - 1秒以下のレスポンス
+- **シンプル** - 直感的なAPI
+- **型安全** - TypeScript完全対応
+- **包括的** - 時間割・成績・出席・掲示に対応
 
-## Install
+## インストール
 
 ```bash
 npm install open-unipa
 ```
 
-## Usage
+## 使い方
 
 ```typescript
 import { OpenUNIPA, UnivList } from 'open-unipa';
 
 const unipa = OpenUNIPA({
-  username: 'your_username',
-  password: 'your_password',
+  username: 'ユーザー名',
+  password: 'パスワード',
   univ: UnivList.KINDAI.HIGASHI_OSAKA,
 });
 
@@ -41,50 +41,50 @@ const timetable = await unipa.timetable.fetch();
 timetable.print();
 ```
 
-## Examples
+## 使用例
 
-### Grades & GPA
+### 成績・GPA確認
 
 ```typescript
 const grades = await unipa.grades.fetch();
 console.log(`GPA: ${grades.getGPA()}`);
-console.log(`Credits: ${grades.getTotalEarnedCredits()}`);
+console.log(`取得単位: ${grades.getTotalEarnedCredits()}`);
 ```
 
-### Attendance tracking
+### 出席状況管理
 
 ```typescript
 const attendance = await unipa.attendance.fetch();
-console.log(`Rate: ${attendance.getOverallAttendanceRate()}%`);
+console.log(`出席率: ${attendance.getOverallAttendanceRate()}%`);
 
 const low = attendance.getLowAttendanceSubjects(70);
 low.forEach(s => console.log(`${s.name}: ${s.attendanceRate}%`));
 ```
 
-### Notice management
+### 掲示情報管理
 
 ```typescript
 const notices = await unipa.notice.fetch();
 const unread = notices.filter({ priority: 'high', isRead: false });
-console.log(`Unread: ${unread.length}`);
+console.log(`未読: ${unread.length}件`);
 ```
 
 ## API
 
-| Controller | Description |
+| コントローラー | 説明 |
 |------------|-------------|
-| `account` | Authentication & login |
-| `timetable` | Class schedules |
-| `grades` | Grade data & GPA |
-| `attendance` | Attendance tracking |
-| `notice` | Announcements & notices |
-| `menu` | UNIPA navigation |
+| `account` | 認証・ログイン |
+| `timetable` | 時間割 |
+| `grades` | 成績・GPA |
+| `attendance` | 出席状況 |
+| `notice` | 掲示情報 |
+| `menu` | UNIPAナビゲーション |
 
-## Requirements
+## 動作環境
 
 - Node.js 18+
-- Kindai University UNIPA account
+- 近畿大学UNIPAアカウント
 
-## License
+## ライセンス
 
 MIT
