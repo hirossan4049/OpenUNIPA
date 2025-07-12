@@ -11,7 +11,7 @@ examples/
 ├── typescript/        # TypeScriptのサンプル
 │   ├── stub-demo.ts   # スタブモードのデモ（認証不要）
 │   └── real-api-demo.ts # 実際のAPIを使用するデモ
-└── bun/              # Bunランタイム用のサンプル
+└── bun-example/       # Bunランタイム用のサンプル
     └── ...
 ```
 
@@ -38,6 +38,13 @@ npx tsx typescript/stub-demo.ts
 #### 実際のAPI使用
 ```bash
 npx tsx typescript/real-api-demo.ts
+```
+
+#### Bunランタイム使用
+```bash
+cd bun-example
+bun install
+bun run dev
 ```
 
 ## サンプルの説明

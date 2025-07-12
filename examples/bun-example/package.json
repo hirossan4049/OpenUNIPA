@@ -1,0 +1,17 @@
+{
+  "name": "open-unipa-bun-example",
+  "version": "1.0.0",
+  "description": "Bun example for OpenUNIPA",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "bun run index.ts",
+    "start": "bun run index.ts"
+  },
+  "dependencies": {
+    "open-unipa": "^0.0.13"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "type": "module"
+}
